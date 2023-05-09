@@ -1,4 +1,4 @@
-from .utils import get_transcription, get_answer_from_model, convert_mp3, prompt_config
+from .utils import get_transcription, get_answer_from_model, convert_mp3, get_image_from_model, prompt_config
 from pytube import YouTube
 
 
@@ -90,10 +90,7 @@ Give me a catchy one-sentence summary
         )
 
     def get_thumbnail(self):
-        return get_answer_from_model(
-            self.prompt_config["title"].system_prompt,
-            self.prompt_config["title"].prompt,
-        )
+        return get_image_from_model(self.prompt_config["title"].prompt)
 
     def buildPayload(self):
         return {
