@@ -1,10 +1,16 @@
-import openai
-from pytube import YouTube
 import os
+from pytube import YouTube
+from dotenv import load_dotenv
+import openai
+
+load_dotenv()
 
 MODEL = "gpt-3.5-turbo"
 
 DEFAULT_PATH = "temp"
+
+
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
 def message_dict(role, content):
@@ -43,7 +49,7 @@ def convert_mp3(video_url):
     new_file = base.replace(" ", "-") + ".mp3"
     os.rename(out_file, new_file)
 
-    print(base + " has been successfully downloaded.")
+    print(f"{base} has been successfully converted.")
 
     return new_file
 
@@ -51,4 +57,9 @@ def convert_mp3(video_url):
 def get_transcription(audio_filename):
     audio_file = open(f"{audio_filename}", "rb")
     transcript = openai.Audio.transcribe("whisper-1", audio_file)
+
+    print(f"{audio_file} has been successfully transcribed.")
+
+    os.remove(audio_filename)
+
     return transcript.text
