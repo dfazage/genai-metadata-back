@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .gptmodel import get_transcription
+from gptmodel import VideoMetadata
 
 app = FastAPI()
 
@@ -9,10 +9,7 @@ async def root():
     return {"message": "Coucou api"}
 
 
-@app.get("/video/{url}")
-async def converter(url):
-    textFinal = get_transcription()
-
-    title = getTitleFromText()
-
-    return get_transcription(url)
+@app.get("/videos")
+async def converter(video_url):
+    video_meta_data = VideoMetadata(video_url)
+    return video_meta_data.buildPayload()

@@ -25,3 +25,8 @@ Give me a catchy one-sentence summary
         systemPrompt = ""
         prompt = ""
         return get_answer_from_model(systemPrompt, prompt)
+    
+    def buildPayload(self):
+        return {
+            "summary": self.getTitle(),
+        }
