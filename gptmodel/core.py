@@ -90,7 +90,11 @@ Give me a catchy one-sentence summary
         )
 
     def get_thumbnail(self):
-        return get_image_from_model(self.prompt_config["title"].prompt)
+        image_prompt = get_answer_from_model(
+            self.prompt_config["title"].system_prompt,
+            self.prompt_config["title"].prompt,
+        )
+        return get_image_from_model(image_prompt)
 
     def buildPayload(self):
         return {
