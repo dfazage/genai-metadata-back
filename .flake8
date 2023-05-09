@@ -1,0 +1,25 @@
+[flake8]
+ignore =
+  E711
+  E712
+  E252
+  W504
+  E231  # conflict with black cf https://github.com/psf/black/issues/1289 and https://github.com/psf/black/issues/1288
+  W503  # idem, https://github.com/psf/black/issues/43
+  E203
+max-line-length = 120
+
+exclude =
+    .cache/,measures/.cache/
+    archive/
+    tmp/,**/tmp/
+    private/,**/private/
+    core/tests/resources/full_fixtures.py
+    scripts/
+    models/
+    node_modules/,**/node_modules
+
+per-file-ignores =
+  *.py:E501
+  *.py:F811,F401,E128,E501
+  **/__init__.py:F401

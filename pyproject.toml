@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "contentgptbot"
+version = "0.1.0"
+description = "ChatGPT-based assistant for Audio/Video metadata enhancement."
+authors = ["Faza Hamzaoui"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openai = "^0.27.2"
+python-dotenv = "^1.0.0"
+fastapi = "^0.95.1"
+pytube = "^15.0.0"
+
+
+[tool.poetry.dev-dependencies]
+taskipy = "^1.2.1"
+pytest = "^6.0.1"
+black = "^23.1.0"
+flake8 = "3.9.2"
+
+
+[tool.taskipy.tasks]
+format = "black . ./api ./gptmodel"
+lint-only = "flake8 ."
+lint = "task format --check && task lint-only"
+update-requirements = "poetry export -f requirements.txt > requirements.txt"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
