@@ -36,7 +36,7 @@ def get_answer_from_model(system_prompt, prompt, model=MODEL):
 
 
 async def aget_answer_from_model(system_prompt, prompt, model=MODEL):
-    openai_object = openai.ChatCompletion.acreate(
+    openai_object = await openai.ChatCompletion.acreate(
         model=model,
         messages=[
             message_dict("system", system_prompt),
@@ -52,7 +52,7 @@ def get_image_from_model(prompt):
 
 
 async def aget_image_from_model(prompt):
-    response = openai.Image.acreate(prompt=prompt, n=1, size=IMG_SIZE)
+    response = await openai.Image.acreate(prompt=prompt, n=1, size=IMG_SIZE)
     return response["data"][0]["url"]
 
 

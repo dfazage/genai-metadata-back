@@ -1,12 +1,10 @@
 from .utils import (
     get_transcription,
-    get_answer_from_model,
     convert_mp3,
-    get_image_from_model,
+    aget_answer_from_model,
+    aget_image_from_model,
     prompt_config,
 )
-from pytube import YouTube
-
 
 class VideoMetadata:
     def __init__(self, video_url):
@@ -48,91 +46,94 @@ Give me a catchy one-sentence summary.
             "thumbnail": prompt_config(),
         }
 
-    def get_title(self):
-        return get_answer_from_model(
+    async def get_title(self):
+        print('get_title')
+        return await aget_answer_from_model(
             self.prompt_config["title"].system_prompt,
             self.prompt_config["title"].prompt,
         )
 
-    def get_language(self):
-        return get_answer_from_model(
+    async def get_language(self):
+        print('get_language')
+        return await aget_answer_from_model(
             self.prompt_config["language"].system_prompt,
             self.prompt_config["language"].prompt,
         )
 
-    def get_summary(self):
-        return get_answer_from_model(
+    async def get_summary(self):
+        print('get_summary')
+        return await aget_answer_from_model(
             self.prompt_config["summary"].system_prompt,
             self.prompt_config["summary"].prompt,
         )
 
-    def get_teaser(self):
-        return get_answer_from_model(
+    async def get_teaser(self):
+        return await aget_answer_from_model(
             self.prompt_config["teaser"].system_prompt,
             self.prompt_config["teaser"].prompt,
         )
 
-    def get_detailed_summary(self):
-        return get_answer_from_model(
+    async def get_detailed_summary(self):
+        return await aget_answer_from_model(
             self.prompt_config["detailed_summary"].system_prompt,
             self.prompt_config["detailed_summary"].prompt,
         )
 
-    def get_key_phrases(self):
-        return get_answer_from_model(
+    async def get_key_phrases(self):
+        return await aget_answer_from_model(
             self.prompt_config["key_phrases"].system_prompt,
             self.prompt_config["key_phrases"].prompt,
         )
 
-    def get_acquired_skills(self):
-        return get_answer_from_model(
+    async def get_acquired_skills(self):
+        return await aget_answer_from_model(
             self.prompt_config["acquired_skills"].system_prompt,
             self.prompt_config["acquired_skills"].prompt,
         )
 
-    def get_prerequisites(self):
-        return get_answer_from_model(
+    async def get_prerequisites(self):
+        return await aget_answer_from_model(
             self.prompt_config["prerequisites"].system_prompt,
             self.prompt_config["prerequisites"].prompt,
         )
 
-    def get_followups(self):
-        return get_answer_from_model(
+    async def get_followups(self):
+        return await aget_answer_from_model(
             self.prompt_config["followups"].system_prompt,
             self.prompt_config["followups"].prompt,
         )
 
-    def get_glossary(self):
-        return get_answer_from_model(
+    async def get_glossary(self):
+        return await aget_answer_from_model(
             self.prompt_config["glossary"].system_prompt,
             self.prompt_config["glossary"].prompt,
         )
 
-    def get_assessement(self):
-        return get_answer_from_model(
+    async def get_assessement(self):
+        return await aget_answer_from_model(
             self.prompt_config["assessement"].system_prompt,
             self.prompt_config["assessement"].prompt,
         )
 
-    def get_thumbnail(self):
-        image_prompt = get_answer_from_model(
+    async def get_thumbnail(self):
+        image_prompt = await aget_answer_from_model(
             self.prompt_config["thumbnail"].system_prompt,
             self.prompt_config["thumbnail"].prompt,
         )
-        return get_image_from_model(image_prompt)
+        return await aget_image_from_model(image_prompt)
 
-    def buildPayload(self):
+    async def buildPayload(self):
         return {
-            "title": self.get_title(),
-            "language": self.get_language(),
-            "summary": self.get_summary(),
-            "teaser": self.get_teaser(),
-            "detailed_summary": self.get_detailed_summary(),
-            "key_phrases": self.get_key_phrases(),
-            "acquired_skills": self.get_acquired_skills(),
-            "prerequisites": self.get_prerequisites(),
-            "glossary": self.get_glossary(),
-            "followups": self.get_followups(),
-            "assessment": self.get_assessement(),
-            "thumbnail": self.get_thumbnail(),
+            "title": await self.get_title(),
+            "language": await self.get_language(),
+            "summary": await self.get_summary(),
+            "teaser": await self.get_teaser(),
+            "detailed_summary": await self.get_detailed_summary(),
+            "key_phrases": await self.get_key_phrases(),
+            "acquired_skills": await self.get_acquired_skills(),
+            "prerequisites": await self.get_prerequisites(),
+            "glossary": await self.get_glossary(),
+            "followups": await self.get_followups(),
+            "assessment": await self.get_assessement(),
+            "thumbnail": await self.get_thumbnail()
         }

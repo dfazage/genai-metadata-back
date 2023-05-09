@@ -12,4 +12,4 @@ async def root():
 @app.get("/videos")
 async def converter(video_url):
     video_meta_data = VideoMetadata(video_url)
-    return video_meta_data.buildPayload()
+    return await video_meta_data.buildPayload()
