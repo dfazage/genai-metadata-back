@@ -10,11 +10,14 @@ MODEL = "gpt-3.5-turbo"
 
 DEFAULT_PATH = "temp"
 
+IMG_SIZE = "256x256"
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
-prompt_config = namedtuple("prompt_config", ["system_prompt", "prompt"])
+prompt_config = namedtuple(
+    "prompt_config", ["system_prompt", "prompt"], defaults=["", ""]
+)
 
 
 def message_dict(role, content):
