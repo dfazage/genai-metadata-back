@@ -1,9 +1,10 @@
 import openai
-
+from pytube import YouTube
+import os
 
 MODEL = "gpt-3.5-turbo"
 
-DEFAULT_PATH = "./temp"
+DEFAULT_PATH = "temp"
 
 
 def message_dict(role, content):
@@ -32,7 +33,22 @@ async def aget_answer_from_model(system_prompt, prompt, model=MODEL):
     return openai_object["choices"][0]["message"]["content"]
 
 
+def convert_mp3(video_url):
+    yt = YouTube(video_url)
+    video = yt.streams.filter(only_audio=True).first()
+
+    out_file = video.download(output_path=DEFAULT_PATH)
+
+    base, __ = os.path.splitext(out_file)
+    new_file = base.replace(" ", "-") + ".mp3"
+    os.rename(out_file, new_file)
+
+    print(base + " has been successfully downloaded.")
+
+    return new_file
+
+
 def get_transcription(audio_filename):
-    audio_file = open(f"{DEFAULT_PATH}/{audio_filename}", "rb")
+    audio_file = open(f"{audio_filename}", "rb")
     transcript = openai.Audio.transcribe("whisper-1", audio_file)
     return transcript.text

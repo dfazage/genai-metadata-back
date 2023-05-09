@@ -22,7 +22,7 @@ flake8 = "3.9.2"
 
 
 [tool.taskipy.tasks]
-format = "black . ./api ./gptmodel"
+format = "black . ./gptmodel"
 lint-only = "flake8 ."
 lint = "task format --check && task lint-only"
 update-requirements = "poetry export -f requirements.txt > requirements.txt"

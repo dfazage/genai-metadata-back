@@ -1,12 +1,13 @@
-from .utils import get_transcription, get_answer_from_model
+from .utils import get_transcription, get_answer_from_model, convert_mp3
 from pytube import YouTube
 
 
 class VideoMetadata:
-    def __init__(self, videoUrl):
-        self.videoUrl = videoUrl
-        self.youtubeObject = YouTube(self.videoUrl)
-        self.transcription = get_transcription(self.youtubeObject.title)
+    def __init__(self, video_url):
+        self.video_url = video_url
+        self.audio_filename = convert_mp3(self.video_url)
+
+        self.transcription = get_transcription(f"{self.audio_filename}")
 
     def getTitle(self):
         systemPrompt = """
