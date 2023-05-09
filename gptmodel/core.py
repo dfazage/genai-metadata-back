@@ -80,7 +80,7 @@ Give me a catchy one-sentence summary
         return {
             "title": self.get_title(),
             "language": self.get_language(),
-            "language": self.get_summary(),
+            "summary": self.get_summary(),
             "teaser": self.get_teaser(),
             "detailed_summary": self.get_detailed_summary(),
             "key_phrases": self.get_key_phrases(),
