@@ -1,5 +1,6 @@
 import os
 from pytube import YouTube
+from collections import namedtuple
 from dotenv import load_dotenv
 import openai
 
@@ -11,6 +12,9 @@ DEFAULT_PATH = "temp"
 
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
+
+
+prompt_config = namedtuple("prompt_config", ["system_prompt", "prompt"])
 
 
 def message_dict(role, content):
