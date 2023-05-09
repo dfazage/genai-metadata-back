@@ -39,6 +39,16 @@ async def aget_answer_from_model(system_prompt, prompt, model=MODEL):
     return openai_object["choices"][0]["message"]["content"]
 
 
+def get_image_from_model(prompt):
+    response = openai.Image.create(prompt=prompt, n=1, size=IMG_SIZE)
+    return response["data"][0]["url"]
+
+
+async def aget_image_from_model(prompt):
+    response = openai.Image.acreate(prompt=prompt, n=1, size=IMG_SIZE)
+    return response["data"][0]["url"]
+
+
 def convert_mp3(video_url):
     yt = YouTube(video_url)
     video = yt.streams.filter(only_audio=True).first()

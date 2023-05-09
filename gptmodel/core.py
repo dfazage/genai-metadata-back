@@ -89,5 +89,5 @@ Give me a catchy one-sentence summary
             "glossary": self.get_glossary(),
             "followups": self.get_followups(),
             "assessment": self.get_assessement(),
-            "thumbnail": self.get_thumbnail()
+            "thumbnail": self.get_thumbnail(),
         }
