@@ -160,8 +160,9 @@ You are a friendly instructional designer assistant. Your goal is to provide key
                 f"""
 Here is the text transcription from the video/audio :
 {truncate_tokens(self.transcription)}
-Please generate a quiz that highlights the key ideas in the provided text. The quiz will be made of 2 true or false questions. No more than 30 words for each question.
-For each answer, tell me which is correct and please provide a 30-word explanation as to why it is correct, in relation to the subject. For each question, generate a fun fact vaguely related to the subject to bring extra information - no more than 40 words. Provide quiz only with answers.
+Given this material, generate a quiz with:
+2 true/false.
+Decorate every question with emojis and provide correct answer.
             """,
             ),
             "thumbnail": prompt_config(
