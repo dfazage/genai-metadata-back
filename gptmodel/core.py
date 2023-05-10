@@ -5,6 +5,8 @@ from .utils import (
     aget_image_from_model,
     prompt_config,
     truncate_tokens,
+    convert_stringlist,
+    convert_stringarray,
 )
 
 
@@ -169,8 +171,29 @@ You are an assistant expert prompt generation for dall-e's artificial intelligen
                 f"""
 Here is the text transcription from the video/audio :
 {truncate_tokens(self.transcription)}
-Give me the suitable prompt for a thumbnail. Image only, no text in the thumbnail.
+Give me the suitable prompt for a video thumbnail. Image only, no text in the thumbnail.
             """,
+            ),
+            "faq": prompt_config(
+                """
+You are an expert in user experience and human psychology
+                """,
+                f"""
+Here is the text transcription from the video/audio :
+{truncate_tokens(self.transcription)}
+Generate 8 frequently asked questions on this text, from the most basic to the most precise and complex. Give the answer with the question
+                """,
+            ),
+            "keywords": prompt_config(
+                """
+You are a content manager's assistant, and your role is to generate key phrases that summarize a subject based on transcripts that I will provide.
+Based on this transcript, please generate 5 key phrases that best describe and summarize the subject. No more than 4 words for each key phrase. Use a dynamic and engaging tone.
+                """,
+                f"""
+Here is the transcript
+{truncate_tokens(self.transcription)}
+Give me the 5 key words. The output format must be python list. Give me only the python list ['value_word1', 'value_word2','value_word3','value_word4', 'value_word5']
+                """,
             ),
         }
 
@@ -211,24 +234,28 @@ Give me the suitable prompt for a thumbnail. Image only, no text in the thumbnai
 
     async def get_key_phrases(self):
         print("get_key_phrases")
-        return await aget_answer_from_model(
+        response = await aget_answer_from_model(
             self.prompt_config["key_phrases"].system_prompt,
             self.prompt_config["key_phrases"].prompt,
         )
+        return convert_stringlist(response, ",\n")
 
     async def get_acquired_skills(self):
         print("get_acquired_skills")
-        return await aget_answer_from_model(
+        response = await aget_answer_from_model(
             self.prompt_config["acquired_skills"].system_prompt,
             self.prompt_config["acquired_skills"].prompt,
         )
+        return convert_stringlist(response)
 
     async def get_prerequisites(self):
         print("get_prerequisites")
-        return await aget_answer_from_model(
+        response = await aget_answer_from_model(
             self.prompt_config["prerequisites"].system_prompt,
             self.prompt_config["prerequisites"].prompt,
         )
+
+        return convert_stringlist(response, ",\n ")
 
     async def get_followups(self):
         print("get_followups")
@@ -239,10 +266,11 @@ Give me the suitable prompt for a thumbnail. Image only, no text in the thumbnai
 
     async def get_glossary(self):
         print("get_glossary")
-        return await aget_answer_from_model(
+        response = await aget_answer_from_model(
             self.prompt_config["glossary"].system_prompt,
             self.prompt_config["glossary"].prompt,
         )
+        return convert_stringarray(response)
 
     async def get_assessement(self):
         print("get_assessement")
@@ -261,6 +289,21 @@ Give me the suitable prompt for a thumbnail. Image only, no text in the thumbnai
             f"{image_prompt}. Surrealism, futurist, digital art."
         )
 
+    async def get_faq(self):
+        print("get_faq")
+        return await aget_answer_from_model(
+            self.prompt_config["faq"].system_prompt,
+            self.prompt_config["faq"].prompt,
+        )
+
+    async def get_keywords(self):
+        print("get_keywords")
+        response = await aget_answer_from_model(
+            self.prompt_config["keywords"].system_prompt,
+            self.prompt_config["keywords"].prompt,
+        )
+        return convert_stringlist(response)
+
     async def buildPayload(self):
         return {
             "title": await self.get_title(),
@@ -275,4 +318,6 @@ Give me the suitable prompt for a thumbnail. Image only, no text in the thumbnai
             "followups": await self.get_followups(),
             "assessement": await self.get_assessement(),
             "thumbnail": await self.get_thumbnail(),
+            "faq": await self.get_faq(),
+            "keywords": await self.get_keywords(),
         }

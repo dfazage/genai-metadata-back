@@ -3,6 +3,7 @@ from pytube import YouTube
 from collections import namedtuple
 from dotenv import load_dotenv
 import openai
+import ast
 
 load_dotenv()
 
@@ -87,3 +88,19 @@ def get_transcription(audio_filename):
 
 def truncate_tokens(text):
     return text[:MAX_CHAR] if len(text) >= MAX_CHAR else text
+
+
+def convert_stringlist(text, separator=", "):
+    try:
+        ll = text.strip("][").split(separator)
+        return [elem.replace("'", "") for elem in ll]
+    except Exception:
+        return text
+
+
+def convert_stringarray(text):
+    try:
+        ll = text.strip("][").split(",\n")
+        return [ast.literal_eval(val) for val in ll]
+    except:
+        return text
