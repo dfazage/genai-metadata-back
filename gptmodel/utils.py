@@ -4,6 +4,7 @@ from collections import namedtuple
 from dotenv import load_dotenv
 import openai
 import ast
+import asyncio
 
 load_dotenv()
 
@@ -16,6 +17,10 @@ IMG_SIZE = "256x256"
 MAX_TOKENS = 2000
 
 MAX_CHAR = 10400
+
+RETRY_TIME = 10
+
+MAX_RETRIES = 3
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
@@ -40,14 +45,27 @@ def get_answer_from_model(system_prompt, prompt, model=MODEL):
 
 
 async def aget_answer_from_model(system_prompt, prompt, model=MODEL):
-    openai_object = await openai.ChatCompletion.acreate(
-        model=model,
-        messages=[
-            message_dict("system", system_prompt),
-            message_dict("user", prompt),
-        ],
-    )
-    return openai_object["choices"][0]["message"]["content"]
+    retries = 0
+    while True:
+        try:
+            openai_object = await openai.ChatCompletion.acreate(
+                model=model,
+                messages=[
+                    message_dict("system", system_prompt),
+                    message_dict("user", prompt),
+                ],
+            )
+            return openai_object["choices"][0]["message"]["content"]
+
+        except openai.error.RateLimitError as e:
+            if retries >= MAX_RETRIES:
+                raise e
+            else:
+                retries += 1
+                print(
+                    f"Rate limit exceeded. Retrying in {RETRY_TIME} seconds... (retry {retries} of {MAX_RETRIES})"
+                )
+                await asyncio.sleep(RETRY_TIME)
 
 
 def get_image_from_model(prompt):
