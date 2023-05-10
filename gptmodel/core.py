@@ -195,6 +195,26 @@ Here is the transcript
 Give me the 5 key words. The output format must be python list. Give me only the python list ['value_word1', 'value_word2','value_word3','value_word4', 'value_word5']
                 """,
             ),
+            "fun_facts": prompt_config(
+                """
+You are an expert library assistant in any field and an anecdotes expert? Your goal is to give true anecdotes or fun fact . The anecdotes will help to deepen in a pleasant manner the themes developed in the text transcript given by the user. The anecdotes are not from the text. Answer only, do not give context or other information. You anecdote as a priority scientifically validated, true and accurate. Give me the answer in English.
+            """,
+                f"""
+Here is the transcript
+{truncate_tokens(self.transcription)}
+Give me 3 anecdotes (no more than 40 words per anecdote)
+            """,
+            ),
+            "knowledge_level": prompt_config(
+                """
+You are a learning and development expert. Your goal is to detect the knowledge levelof the video/audio. The text transcription is given by the user. Beginner level would cover basic concepts and terminology, while intermediate level would cover more complex concepts and applications. Advanced level would cover specialized or niche topics, cutting-edge research, and advanced applications. Answer only, without providing context or other information.
+            """,
+                f"""
+Here is the text transcription from the video/audio :
+{truncate_tokens(self.transcription)}
+Give me knowledge level with a short explanation (no more than 20 words). The format should be level : explanation
+            """,
+            ),
         }
 
     async def get_title(self):
@@ -304,6 +324,20 @@ Give me the 5 key words. The output format must be python list. Give me only the
         )
         return convert_stringlist(response)
 
+    async def get_fun_facts(self):
+        print("get_fun_facts")
+        return await aget_answer_from_model(
+            self.prompt_config["fun_facts"].system_prompt,
+            self.prompt_config["fun_facts"].prompt,
+        )
+
+    async def get_knowledge_level(self):
+        print("get_knowledge_level")
+        return await aget_answer_from_model(
+            self.prompt_config["knowledge_level"].system_prompt,
+            self.prompt_config["knowledge_level"].prompt,
+        )
+
     async def buildPayload(self):
         return {
             "title": await self.get_title(),
@@ -320,4 +354,6 @@ Give me the 5 key words. The output format must be python list. Give me only the
             "thumbnail": await self.get_thumbnail(),
             "faq": await self.get_faq(),
             "keywords": await self.get_keywords(),
+            "fun_facts": await self.get_fun_facts(),
+            "knowledge_level": await self.get_knowledge_level(),
         }
