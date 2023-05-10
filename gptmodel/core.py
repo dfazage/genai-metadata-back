@@ -4,6 +4,7 @@ from .utils import (
     aget_answer_from_model,
     aget_image_from_model,
     prompt_config,
+    truncate_tokens,
 )
 
 
@@ -20,7 +21,7 @@ You are an assistant expert in title creation for audio and video. Your goal is 
                 """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me a fancy title.
                 """,
             ),
@@ -31,7 +32,7 @@ You only answer with information from the text. Only answer, don't provide conte
         """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me a catchy one-sentence summary.
         """,
             ),
@@ -41,7 +42,7 @@ You are an assistant expert in language detection for audio and video transcript
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me the language only.
             """,
             ),
@@ -51,7 +52,7 @@ You are an assistant expert in quick summary from audio and video. Your goal is 
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me the quick summary.
             """,
             ),
@@ -62,7 +63,7 @@ Based on each transcript, please generate an engaging LinkedIn text post teasing
             """,
                 f"""
 Here is the transcript:
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Generate the LinkedIn post.
             """,
             ),
@@ -72,7 +73,7 @@ You are an assistant expert in quick summary from audio and video. Your goal is 
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me the 4 most important sentences from the text. Use exactly the same words and sentences as in the text. The output format must be python list. Give me only the python list. ['value_phrase1', 'value_phrase2','value_phrase3', 'value_phrase4']
             """,
             ),
@@ -113,7 +114,7 @@ Diversity & Culture
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me the 3 skills levels associated with the text. Give me the output in a python list only.
             """,
             ),
@@ -123,7 +124,7 @@ You are a learning and development expert. Your goal is to detect the prerequisi
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me 3 sentences for the knowledge needed for a better understanding. Give me the output in a python list only like so: ['value_sentence1', 'value_sentence2','value_sentence3']       
             """,
             ),
@@ -133,7 +134,7 @@ You are an expert library assistant in any field. Your goal is to give advice on
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me three books recommandation in the following format: author's name, book title, publisher's name and publication date. For each book you provide a short explanation. (no more than 20 words) and the internet link to the goodreads reference.
             """,
             ),
@@ -146,7 +147,7 @@ Your objective is to create a 10-word glossary that explains difficult word or k
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me 10 words for the glossary. The output format must be python list of dict with keys "name" and "def". Give me only the python list [{{'name': 'value_name1', 'def'': 'value_def1'}},...,\{{'name': 'value_name10', 'def': 'value_def10'\}}]
             """,
             ),
@@ -156,9 +157,9 @@ You are a friendly instructional designer assistant. Your goal is to provide key
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Please generate a quiz that highlights the key ideas in the provided text. The quiz will be made of 2 true or false questions. No more than 30 words for each question.
-For each answer, tell me which is correct and please provide a 30-word explanation as to why it is correct, in relation to the subject. For each question, generate a fun fact vaguely related to the subject to bring extra information - no more than 40 words.
+For each answer, tell me which is correct and please provide a 30-word explanation as to why it is correct, in relation to the subject. For each question, generate a fun fact vaguely related to the subject to bring extra information - no more than 40 words. Provide quiz only with answers.
             """,
             ),
             "thumbnail": prompt_config(
@@ -167,7 +168,7 @@ You are an assistant expert prompt generation for dall-e's artificial intelligen
             """,
                 f"""
 Here is the text transcription from the video/audio :
-{self.transcription}
+{truncate_tokens(self.transcription)}
 Give me the suitable prompt for a thumbnail. Image only, no text in the thumbnail.
             """,
             ),

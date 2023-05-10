@@ -86,5 +86,4 @@ def get_transcription(audio_filename):
 
 
 def truncate_tokens(text):
-    if len(text) >= MAX_CHAR:
-        return text[:MAX_CHAR]
+    return text[:MAX_CHAR] if len(text) >= MAX_CHAR else text
