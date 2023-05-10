@@ -100,7 +100,7 @@ def convert_stringlist(text, separator=", "):
 
 def convert_stringarray(text):
     try:
-        ll = text.strip("][").split(",\n")
+        ll = text.replace(",\n ", ",\n").strip("][").split(",\n")
         return [ast.literal_eval(val) for val in ll]
     except:
         return text

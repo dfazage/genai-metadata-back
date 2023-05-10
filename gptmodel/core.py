@@ -274,8 +274,7 @@ Give me knowledge level with a short explanation (no more than 20 words). The fo
             self.prompt_config["prerequisites"].system_prompt,
             self.prompt_config["prerequisites"].prompt,
         )
-
-        return convert_stringlist(response, ",\n ")
+        return [r.split(", ") for r in convert_stringlist(response, ",\n")][0]
 
     async def get_followups(self):
         print("get_followups")
